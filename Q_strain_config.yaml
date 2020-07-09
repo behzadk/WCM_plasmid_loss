@@ -1,0 +1,54 @@
+strain_prefix: 'Q'
+
+prior_initial_species:
+    N: [1, 1]
+    s_i: [128, 128]     # Intracellular nutrients
+    a: [8.0, 8.0]       # Energy
+    g_r: [2.2, 2.2]       # Unoccupied ribosomes
+    g_e_t: [1.0, 1.0]     # Nutrient transport enzymes
+    g_e_m: [2455.0, 2455.0]     # Metabolic enzymes
+    g_q: [114049.0, 114049.0]       # House keeping enzymes
+
+    m_r: [100.0, 100.0]     # Ribosome mRNA
+    m_e_t: [4.5, 4.5]   # Nutrient transport enzyme mRNA
+    m_e_m: [4.5, 4.5]   # Metabolic enzymes mRNA
+    m_q: [337.4, 337.4]     # House keeping enzyme mRNA
+
+    c_r: [201.0, 201.0]     # Ribosome being translated
+    c_e_t: [17.6, 17.6]   # Nutrient transport enzyme being translated
+    c_e_m: [17.6, 17.6]   # Metabolic enzymes being translated
+    c_q: [2830.9, 2830.9]     # House keeping enzyme being translated
+
+prior_paramters:
+    n_r: [7459.0, 7459.0]       # Protein length of ribosome
+    n_e_t: [300.0, 300.0]     # Protein length of ribosome nutrient transport enzymes
+    n_e_m: [300.0, 300.0]     # Protein length of metabolic enzyme
+    n_q: [300.0, 300.0]       # Protein length of housekeeping
+
+    K_t: [1000.0, 1000.0]   # Nutrient transport threshold
+    K_m: [1000.0, 1000.0]   # Enzymatic threshold
+    v_m: [5800.0, 5800.0]   # Max enzymatic rate
+    v_t: [726.0, 726.0]     # Max nutrient import rate
+
+    K_gamma: [3E+8, 3E+8]         # Translation elongation rate
+    gamma_max: [1260.0, 1260.0] # Max translation elongation rate
+
+    n_s: [5.0, 5.0]         # Nutrient efficiency
+
+    k_b: [1.0, 1.0]         # mRNA-ribosome binding rate
+    k_u: [1.0, 1.0]         # mRNA-ribosome unbinding rate
+
+    w_r: [930.0, 930.0]     # Max ribosome transcription rate
+    w_e_t: [4.14, 4.14]     # Max transport enzyme transcription rate
+    w_e_m: [4.14, 4.14]     # Max metabolic enzyme transcription rate
+    w_q: [948.93, 948.93]       # Max housekeeping enzyme transcription rate
+
+    # Ribosome has different threshold, all other transcripts should have
+    # same threshold.
+    theta_r: [426.87, 426.97]   # Ribosome transcription threshold
+    theta_e_t: [4.38, 4.38]     # Transport enzyme transcription threshold
+    theta_e_m: [4.38, 4.38]     # Metabolic enzyme transcription threshold
+    theta_q: [4.38, 4.38]       # Housekeeping enzyme transcription transcription thresholds
+
+    d_m: [0.1, 0.1]          # mRNA degradation rate
+    d_N: [0.0, 0.0]
