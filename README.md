@@ -10,7 +10,7 @@ Configuration files are used to define the bioreactor environment and each strai
 Each parameter definition take two values for uniform sampling, `[lower_bound, upper_bound]` . <br /> Make `lower_bound == upper_bound` 
 if the parameter is fixed
 
-The prefix defined by in each config file is used to define the membership of paramters and species.
+The prefix set in each config file is used to define the membership of paramters and species.
 
 ### Bioreactor
 `bioreactor_config.yaml` defines the bioreactor environment. For batch cultures efflux and influx are zerro,<br />
