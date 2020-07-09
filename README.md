@@ -4,7 +4,7 @@ Whole cell model with plasmid loss experiments
 ## Requirements
 Python 3.6+, see requirements.txt for python libraries used
 
-## Config files
+## Configuration files
 Configuration files are used to define the bioreactor environment and each strain (See example config files). 
 
 Each parameter definition take two values for uniform sampling, `[lower_bound, upper_bound]` . <br /> Make `lower_bound == upper_bound` 
