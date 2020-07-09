@@ -7,7 +7,7 @@ Python 3.6+, see requirements.txt for python libraries used
 ## Config files
 Configuration files are used to define the bioreactor environment and each strain (See example config files). 
 
-Each parameter definition take two values for uniform sampling, `[lower_bound, upper_bound]` . Make `lower_bound == upper_bound` 
+Each parameter definition take two values for uniform sampling, `[lower_bound, upper_bound]` . <br /> Make `lower_bound == upper_bound` 
 if the parameter is fixed
 
 The prefix defined by in each config file is used to define the membership of paramters and species.
