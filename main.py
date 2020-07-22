@@ -155,7 +155,6 @@ def main():
         strain_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
         Q_strain = Strain(bioreactor, strain_config)
 
-
     output_dir = "./output/"
 
     # Make time vector (minutes)
@@ -171,7 +170,7 @@ def main():
     # Run simple growth curve experiment
     run_growth_curve(y0, t, bioreactor, strain_list, species_keys, plot_species, output_dir)
     
-    # Make list of strains
+    # Make list of strains to be simulated
     strain_list = [P_strain, Q_strain]
 
     # Generate integration inputs and prepare objects
