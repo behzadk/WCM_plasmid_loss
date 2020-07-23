@@ -29,10 +29,13 @@ class Strain:
         prior_dict = self.prior_species_dict
 
         for k in prior_dict.keys():
-            sampled_value = np.random.uniform(float(prior_dict[k][0]), float(prior_dict[k][1]))
+            key_with_prefix = self.strain_prefix + '_' + k
 
-            key_w_prefix = self.strain_prefix + '_' + k
-            self.initial_species[key_w_prefix] = sampled_value
+            if prior_dict[k][0] == prior_dict[k][1]:
+                self.initial_species[key_with_prefix] = float(prior_dict[k][0])
+            else:
+                sampled_value = np.random.uniform(float(prior_dict[k][0]), float(prior_dict[k][1]))
+                self.initial_species[key_with_prefix] = sampled_value
 
     def sample_parameters(self):
         """ Generates a dictionary containing parameters for this strain

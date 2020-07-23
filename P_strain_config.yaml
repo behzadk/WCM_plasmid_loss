@@ -1,8 +1,8 @@
 strain_prefix: 'P'
 
 prior_initial_species:
-    N: [2E+5, 2E+5]
-    s_i: [128, 128]     # Intracellular nutrients
+    N: [1000.0, 1000.0]
+    s_i: [128.0, 128.0]     # Intracellular nutrients
     a: [8.0, 8.0]       # Energy
     g_r: [2.2, 2.2]       # Unoccupied ribosomes
     g_e_t: [1.0, 1.0]     # Nutrient transport enzymes
@@ -38,7 +38,7 @@ prior_paramters:
     K_gamma: [3E+8, 3E+8]         # Translation elongation rate
     gamma_max: [1260.0, 1260.0] # Max translation elongation rate
 
-    n_s: [5.0, 5.0]         # Nutrient efficiency
+    n_s: [299.48, 299.48]         # Nutrient efficiency
 
     k_b: [1.0, 1.0]         # mRNA-ribosome binding rate
     k_u: [1.0, 1.0]         # mRNA-ribosome unbinding rate
@@ -50,7 +50,7 @@ prior_paramters:
 
     # Ribosome has different threshold, all other transcripts should have
     # same threshold.
-    theta_r: [426.87, 426.97]   # Ribosome transcription threshold
+    theta_r: [426.87, 426.87]   # Ribosome transcription threshold
     theta_e_t: [4.38, 4.38]     # Transport enzyme transcription threshold
     theta_e_m: [4.38, 4.38]     # Metabolic enzyme transcription threshold
     theta_q: [4.38, 4.38]       # Housekeeping enzyme transcription transcription thresholds

@@ -1,7 +1,7 @@
 bioreactor_prefix: 'B'
 
 prior_initial_species:
-    s: [5E+11, 5E+11]       # Extracellular nutrients
+    s: [9.77226E+10, 9.77226E+10]       # Extracellular nutrients
 
 prior_paramters:
     d_s: [0.0, 0.0]     # Rate of efflux
