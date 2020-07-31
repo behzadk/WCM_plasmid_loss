@@ -1,15 +1,53 @@
 from scipy.integrate import ode
 from scipy.integrate import odeint
 from strain import Strain
-from bioreactor import Bioreactor
+from WCM.bioreactor import Bioreactor
 import oyaml as  yaml
 
-from simulate import growth_curve_diff_eqs
+from WCM.simulate import growth_curve_diff_eqs
 import numpy as np
 import utils
 import scipy.optimize as optimize
 import time
+import os
 
+def plot_growth_curve(B_s, n_s, bioreactor_config, strain_config, output_dir):
+    # Make directory
+    try:
+        os.mkdir(output_dir)
+    except FileExistsError:
+        pass
+
+    # Initialise bioreactor object
+    bioreactor = Bioreactor(bioreactor_config)
+    
+    # Initialise strain object
+    Q_strain = Strain(bioreactor, strain_config)
+    
+    # Make list of strains
+    strain_list = [Q_strain]
+    species_keys, y0 = utils.generate_integrate_inputs(bioreactor, strain_list)
+
+    # Set bioreactor initial S
+    B_s_idx = species_keys.index('B_s')
+    y0[B_s_idx] = float(B_s)
+
+    # Set strain nutrient efficiency
+    Q_strain.params['n_s'] = float(n_s)
+
+    # Make time vector (minutes)
+    t = np.arange(0, 1440, 0.01)
+
+    # Simulate growth
+    sol = odeint(growth_curve_diff_eqs, y0, t, 
+        args=(bioreactor, strain_list, species_keys), mxstep=10**4)
+    
+    species_str = 'Q_N'
+    Q_N_idx = species_keys.index(species_str)
+
+    sns.lineplot(x=t, y=sol[:, Q_N_idx], label='Cells')
+    plt.savefig(output_dir + "/fitted_growth.pdf", dpi=500)
+    plt.close()
 
 def growth_optimize_func(free_params, bioreactor_config, strain_config, target_6hr_ratio=500, target_final_6hr_ratio=1):
     """ Runs optimises growth parameters
@@ -85,6 +123,8 @@ def fit_growth_parameters():
     fold change in cell density at 6hr and 24hr time points
     """
 
+    fit_growth_dir = "./fit_growth"
+
     # Set initial guesses
     init_B_s = 9.75 # B_s is scaled up in the optimisation function B_s * 10 ** 10
     init_n_s = 300
@@ -94,14 +134,15 @@ def fit_growth_parameters():
     max_iter = 50
 
 
-    bioreactor_config_yaml = "./bioreactor_config.yaml"
+    bioreactor_config_yaml = fit_growth_dir + "/bioreactor_config.yaml"
     with open(bioreactor_config_yaml, 'r') as yaml_file:
         bioreactor_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
 
-    strain_config_yaml = "./Q_strain_config.yaml"
+    strain_config_yaml = fit_growth_dir + "/Q_strain_config.yaml"
     with open(strain_config_yaml, 'r') as yaml_file:
         strain_config = yaml.load(yaml_file, Loader=yaml.FullLoader)
 
+    # Run optimisation
     res = optimize.minimize(
         growth_optimize_func, 
         initial_guess,
@@ -110,15 +151,14 @@ def fit_growth_parameters():
         options={'maxiter': max_iter}
         )
 
-    print("Finished: ")
     print(res)
     print("")
     print("")
-
     print("Fitted B_s value: ", res['x'][0], "E+10")
     print("Fitted n_s value: ", res['x'][1])
-
-
+    print("Plotting fitted growth curve")
+    plot_growth_curve(res['x'][0]*float(10**10), res['x'][1], bioreactor_config, strain_config, fit_growth_dir + "/output/")
+    print("Finished")
 
 if __name__ == "__main__":
     fit_growth_parameters()

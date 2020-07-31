@@ -1,7 +1,7 @@
 import numpy as np
 import oyaml as  yaml
 from collections import OrderedDict
-import functions as funcs
+from . import functions as funcs
 
 
 class Strain:
@@ -16,10 +16,15 @@ class Strain:
 
         self.strain_prefix = strain_config['strain_prefix']
         self.bioreactor = bioreactor
-
+        
         self.protein_species = []
         self.mrna_species = []
         self.c_mrna_species = []
+
+
+        self.sample_initial_species()
+        self.sample_parameters()
+        self.categorise_species()
 
 
     def sample_initial_species(self):
@@ -93,7 +98,6 @@ class Strain:
         for k in self.initial_species.keys():
             no_prefix_key = '_'.join(k.split('_')[1:])
             self.species_values[no_prefix_key] = current_species_dict[k]
-
 
     def calculate_mass(self):
         """ Mass is the sum of proteins (including bound ribosomes) Eq(12)
@@ -397,6 +401,5 @@ class Strain:
         output_dict.update(dot_g_x_dict)
         output_dict.update(dot_m_x_dict)
         output_dict.update(dot_c_x_dict)
-
 
         return output_dict

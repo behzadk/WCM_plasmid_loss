@@ -6,6 +6,10 @@ class Bioreactor:
         self.prefix = bioreactor_config['bioreactor_prefix']
         self.prior_species_dict = bioreactor_config['prior_initial_species']
         self.prior_params_dict = bioreactor_config['prior_paramters']
+        
+        self.sample_initial_species()
+        self.sample_parameters()
+
 
     def sample_initial_species(self):
         self.initial_species = {}

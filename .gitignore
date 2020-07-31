@@ -1,4 +1,7 @@
 __pycache__
 venv
-output/*
-output
+output/
+data/
+archive/
+fit_plasmid_loss/output/
+fit_growth/output/

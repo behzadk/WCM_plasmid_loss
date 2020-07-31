@@ -1,4 +1,4 @@
-strain_prefix: 'P'
+strain_prefix: 'Q'
 
 prior_initial_species:
     N: [1000.0, 1000.0]
@@ -18,11 +18,6 @@ prior_initial_species:
     c_e_t: [17.6, 17.6]   # Nutrient transport enzyme being translated
     c_e_m: [17.6, 17.6]   # Metabolic enzymes being translated
     c_q: [2830.9, 2830.9]     # House keeping enzyme being translated
-
-    # Heterologous species
-    g_h: [1.0, 1.0]
-    m_h: [1, 1]
-    c_h: [1.6, 1.6]
 
 prior_paramters:
     n_r: [7459.0, 7459.0]       # Protein length of ribosome
@@ -57,9 +52,3 @@ prior_paramters:
 
     d_m: [0.1, 0.1]          # mRNA degradation rate
     d_N: [0.0, 0.0]
-
-    # Heterologous species paramters
-    w_h: [4.14, 4.14]   # This baseline is equivalent to single copy number
-    n_h: [300, 300]
-    theta_h: [4.38, 4.38]
-

@@ -81,6 +81,7 @@ def plasmid_loss_diff_eqs(y, t, bioreactor, strain_list, species_key_list, plasm
     # Calculate drop rate
     N_plasmid_bearing = sol_dict[plasmid_bearing_key]
     drop_rate = 2 ** (1 - PCN) * lambd_plasmid_bearing * N_plasmid_bearing
+    # drop_rate = 0.0
 
     # Add drop rate term to differential equations
     sol_dict[plasmid_bearing_key] = sol_dict[plasmid_bearing_key] - drop_rate
