@@ -1,5 +1,4 @@
-# WCM plasmid loss
-Whole cell model with plasmid loss experiments
+# Whole cell model for plasmid loss simulation and prediction
 
 ## Requirements
 Python 3.6+, see requirements.txt for python libraries used
