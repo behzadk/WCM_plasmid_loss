@@ -1,7 +1,7 @@
 strain_prefix: 'Q'
 
 prior_initial_species:
-    N: [1, 1]
+    N: [100, 100]
     s_i: [128, 128]     # Intracellular nutrients
     a: [8.0, 8.0]       # Energy
     g_r: [2.2, 2.2]       # Unoccupied ribosomes

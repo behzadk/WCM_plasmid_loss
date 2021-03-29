@@ -2,8 +2,9 @@ from scipy.integrate import ode
 from scipy.integrate import odeint
 from strain import Strain
 from bioreactor import Bioreactor
-import oyaml as  yaml
-
+import yaml
+import argparse
+ 
 from simulate import growth_curve_diff_eqs
 from simulate import plasmid_loss_diff_eqs
 
@@ -12,6 +13,19 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+parser = argparse.ArgumentParser(description="Runs a plasmid drop experiment for \
+                                                a given plasmid copy number (--PCN) \
+                                                and number of passages (--n_passages).\n\n \
+                                                Parameters of the plasmid strain are defined in \
+                                                P_strain_config.yaml. Parameters of the \
+                                                plasmid free strain (wt strain) are defined \
+                                                by Q_strain_config.yaml")
+
+parser.add_argument('--n_passages', type=int, help="Number of passages to run")
+parser.add_argument('--PCN', type=int, help="Plasmid copy number")
+parser.add_argument('--time', type=int, help="Time per passage (mins)", default=600)
+
+args = parser.parse_args()
 
 
 def generate_integrate_inputs(bioreactor, strain_list):
@@ -97,7 +111,8 @@ def run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, plasmid_beari
     plasmid_bearing_ratios = []
 
     for idx in range(n_passages):
-        sol = odeint(plasmid_loss_diff_eqs, y0, t, args=(bioreactor, strain_list, species_keys, plasmid_bearing_strain, wt_strain, PCN), mxstep=10**4)
+        print(y0)
+        sol = odeint(plasmid_loss_diff_eqs, y0, t, args=(bioreactor, strain_list, species_keys, plasmid_bearing_strain, wt_strain, PCN), mxstep=10**5)
 
         P_N_idx = species_keys.index(plasmid_bearing_key)
         Q_N_idx = species_keys.index(wt_key)
@@ -105,15 +120,20 @@ def run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, plasmid_beari
         P_N_end = sol[:, P_N_idx][-1]
         Q_N_end = sol[:, Q_N_idx][-1]
 
+
         sum_cells = P_N_end + Q_N_end
 
         probability_plasmid_free = Q_N_end / sum_cells
 
         plasmid_bearing_ratios.append(P_N_end / sum_cells)
+        print(P_N_end / sum_cells)
+
 
         # Reset initial values by sampling with probability being plasmid free
         y0[Q_N_idx] = 2e5 * probability_plasmid_free
         y0[P_N_idx] = 2e5 - y0[Q_N_idx]
+
+
 
     # Plot passage experiment
     width_inches = 95*4 / 25.4
@@ -131,6 +151,7 @@ def run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, plasmid_beari
     ax.spines["bottom"].set_alpha(0.5)
     ax.set_ylabel('Ratio plasmid bearing')
     ax.set_xlabel('N passages')
+    ax.set_ylim([0.0, 1.0])
     fig.tight_layout()
 
     plt.savefig(output_path, dpi=500)
@@ -157,8 +178,13 @@ def main():
 
     output_dir = "./output/"
 
+    n_passages = args.n_passages
+    PCN = args.PCN
+    time = args.time
+
     # Make time vector (minutes)
-    t = np.arange(0, 600, 0.01)
+    t = np.arange(0, time, 0.01)
+
 
     # Make list of strains
     strain_list = [P_strain]
@@ -167,6 +193,7 @@ def main():
     species_keys, y0 = generate_integrate_inputs(bioreactor, strain_list)
 
     plot_species = ['P_N']
+
     # Run simple growth curve experiment
     run_growth_curve(y0, t, bioreactor, strain_list, species_keys, plot_species, output_dir)
     
@@ -180,27 +207,7 @@ def main():
     # Run plasmid loss experiment 
     run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, 
         plasmid_bearing_strain=P_strain, wt_strain=Q_strain, 
-        heterologous_species_name='h', PCN=5, n_passages=20, output_dir=output_dir)
-
-    # Run plasmid loss experiment 
-    run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, 
-        plasmid_bearing_strain=P_strain, wt_strain=Q_strain, 
-        heterologous_species_name='h', PCN=10, n_passages=20, output_dir=output_dir)
-
-    # Run plasmid loss experiment 
-    run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, 
-        plasmid_bearing_strain=P_strain, wt_strain=Q_strain, 
-        heterologous_species_name='h', PCN=15, n_passages=20, output_dir=output_dir)
-
-    # Run plasmid loss experiment 
-    run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, 
-        plasmid_bearing_strain=P_strain, wt_strain=Q_strain, 
-        heterologous_species_name='h', PCN=20, n_passages=20, output_dir=output_dir)
-
-    # Run plasmid loss experiment 
-    run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, 
-        plasmid_bearing_strain=P_strain, wt_strain=Q_strain, 
-        heterologous_species_name='h', PCN=25, n_passages=20, output_dir=output_dir)
+        heterologous_species_name='h', PCN=PCN, n_passages=n_passages, output_dir=output_dir)
 
 
 if __name__ == "__main__":

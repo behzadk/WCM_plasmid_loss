@@ -1,5 +1,5 @@
 import numpy as np
-import oyaml as  yaml
+import yaml
 from collections import OrderedDict
 import functions as funcs
 
