@@ -4,6 +4,15 @@ Whole cell model with plasmid loss experiments
 ## Requirements
 Python 3.6+, see requirements.txt for python libraries used
 
+## Usage
+Run `main.py` with arguments stating the plasmid copy number (`PCN`) and number of passages (`n_passsages`)
+```
+python3 main.py --PCN 5 --n_passages 30
+```
+
+`python3 main.py --help` to see other arguments
+
+
 ## Configuration files
 Configuration files are used to define the bioreactor environment and each strain (See example config files). 
 
