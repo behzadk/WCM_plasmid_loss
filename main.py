@@ -111,7 +111,6 @@ def run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, plasmid_beari
     plasmid_bearing_ratios = []
 
     for idx in range(n_passages):
-        print(y0)
         sol = odeint(plasmid_loss_diff_eqs, y0, t, args=(bioreactor, strain_list, species_keys, plasmid_bearing_strain, wt_strain, PCN), mxstep=10**5)
 
         P_N_idx = species_keys.index(plasmid_bearing_key)
@@ -126,7 +125,6 @@ def run_plasmid_loss(y0, t, bioreactor, strain_list, species_keys, plasmid_beari
         probability_plasmid_free = Q_N_end / sum_cells
 
         plasmid_bearing_ratios.append(P_N_end / sum_cells)
-        print(P_N_end / sum_cells)
 
 
         # Reset initial values by sampling with probability being plasmid free
